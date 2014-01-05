@@ -1,0 +1,139 @@
+#wrapper {
+    margin-right: auto;
+    margin-left: auto;
+    width: 96%; /* Holding outermost DIV */
+}
+
+header {
+    background-position: 0 top;
+    background-repeat: repeat-x;
+    /*background-image: url(buntingFW.png); */
+    margin-right: 1.0416667%; /* 10/960*/
+    margin-left: 1.0416667%;
+    width: 97.91666667%; /* 940/960 */
+}
+
+header a {
+    text-decoration: none;
+}
+
+#logo {
+    display: block;
+    padding-top: 75px;
+    color: #0d0c0c;
+    text-transform: uppercase;
+    font-family: 'BebasNeueRegular';
+    font-size: 3em; /* 48/16 */
+}
+
+#logo span {color: #dfdada;}
+
+nav {
+    padding-bottom: 25px;
+    margin-top: 26px;
+    margin-left: -1.0416667%; /* 10/960 */
+    padding-right: 1.0416667%; /* 10/960 */
+    padding-left: 1.0416667%; /* 10/960 */
+    width: 97.91666667%; /* 940/960 */
+    background-repeat: repeat-x;
+    /* background-image: url(atwiNavBg.png); */
+    border-bottom-color: #bfbfbf;
+    border-bottom-style: double;
+    border-bottom-width: 4px;
+    background: linear-gradient(top, hsla(0,0%,100%,0.11) 0%,
+    hsla(0,0%,94%,0.11) 10%,
+    hsla(0,0%,84%,0.11) 22%,
+    hsla(0,0%,62%,0.11) 41%,
+    hsla(0,0%,38%,0.11) 61%,
+    hsla(0,0%,22%,0.11) 76%,
+    hsla(0,0%,10%,0.11) 88%,hsla(0,0%,1%,0.11) 100%);
+}
+nav ul li {
+    display: inline-block;
+    margin-right: 2.6595745%; /* 25 ÷ 940 */
+}
+
+nav ul li a {
+    height: 42px;
+    line-height: 42px;
+    text-decoration: none;
+    text-transform: uppercase;
+    font: 1.875em/42px 'BebasNeueRegular';
+    color: black;
+    text-shadow: 0 1px 0 hsla(0, 0%, 100%, 1.0);
+}
+
+nav ul li a:hover {
+    animation: warning 1.5s infinite ease-in;
+}
+
+nav li:nth-child(odd) a {
+    color: #fe0208;
+    color: hsl(359, 99%, 50%);
+}
+
+nav li:nth-child(odd) a:hover {
+    color: hsl(359, 99%, 40%);
+}
+
+.row {
+    padding: 1px;
+}
+.row.answerCorrect i.fa:after {
+    content: "\f00c";
+}
+
+.row.answerIncorrect i.fa:after {
+    content: "\f088";
+}
+.answerCorrect i.fa::after{
+    content: "\f00c";
+}
+.answerIncorrect i.fa::after{
+    content: "\f088";
+}
+#content {
+    border: 2px solid purple;
+    padding: 1em;
+    float: right;
+    width: 100%;
+    height: 100%;
+    background: rosybrown;
+}
+
+#sidebar {
+    border-right-color: #e8e8e8;
+    border-right-style: solid;
+    border-right-width: 2px;
+    margin-top: 58px;
+    margin-right: 10px;
+    margin-left: 10px;
+    float: left;
+    width: 22.7083333%; /* 218/960 */
+} #footer {
+      float: left;
+      margin-top: 20px;
+      margin-right: 10px;
+      margin-left: 10px;
+      clear: both;
+      width: 97.9166667%; /* 940/960 */
+
+  }
+
+  span {
+      padding-left: 10px;
+      padding-right: 10px;
+
+  }
+
+input {
+
+}
+
+.inputEditable {
+
+}
+
+.inputNotEditable{
+
+}
