@@ -13,9 +13,9 @@ header {
     width: 97.91666667%; /* 940/960 */
 }
 
-header a {
-    text-decoration: none;
-}
+/*header a {*/
+    /*text-decoration: none;*/
+/*}*/
 
 #logo {
     display: block;
