@@ -6,6 +6,7 @@
  * @todo do the scores - create another object
  * @todo flash message manager pattern - to display message(correct/incorrect/duplicate)
  *       and style it with css so that it fades away with some set delay
+ * @todo implement score keeping
  */
 window.onload = function() {
     App.main();
