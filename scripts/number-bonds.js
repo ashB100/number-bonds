@@ -1,7 +1,6 @@
 /**
  * Created by Ashnita on 30/12/2013.
  * Trying to use the Revealing Module Pattern
- * @todo How do I access the public properties of numberBonds from Row??
  */
 window.onload = function() {
     numberBonds.init();
@@ -17,19 +16,9 @@ var numberBonds = function () {
     var storySelection; // will be set to the "data-num" attribute when user clicks a story selection (nav) link
     var isDouble;       // will be set if story selection is Double
 
-
     var init = function () {
         setParentElement();
-        addEvents();
-        document.onclick = function () {
-            if (event.target.className === "storyLink") {
-                storySelection = event.target.getAttribute("data-num");
-                console.log(storySelection, "Story Selcected");
-                isDouble = (storySelection == conf.maxNumForDouble);
-                console.log(isDouble, "Is selection Double?");
-                renderStory();
-            }
-        };
+        addClickEvent();
 
         console.dir(parentEl);
     };
@@ -38,19 +27,11 @@ var numberBonds = function () {
         parentEl = document.getElementById(conf.parentContainer);
     };
 
-    var addEvents = function() {
-        // don't know why addEventListener doesn't add the event handler for 'onclick' event of parentEl
-        // try putting it in anonymous function
-        parentEl.addEventListener('click', function()
-        {
-            if (event.target.className === "storyLink") {
-            storySelection = event.target.getAttribute("data-num");
-            isDouble = (storySelection == conf.maxNumForDouble);
-            renderStory();
-        }});
+    var addClickEvent = function() {
+        document.addEventListener('click', handleStorySelection);
     };
 
-    var setStorySelection = function() {
+    var handleStorySelection = function() {
         console.dir(event);
         if (event.target.className === "storyLink") {
             storySelection = event.target.getAttribute("data-num");
@@ -138,22 +119,22 @@ Row.prototype.renderRow = function() {
         // "="
         renderElement(this.el, 'span', {innerHTML: '='});
         // answer
-        this.answer = renderElement(this.el, 'input');
+        this.answer = renderElement(this.el, 'input', {autofocus: (this.rowNumber == 0),required: true, pattern: "d+"});
         // feedback
-        renderElement(this.el, 'i', {className: 'fa'});
+        renderElement(this.el, 'span', {className: 'fa'});
     } else {
         // operand1
-        this.operand1 = renderElement(this.el, 'input');
+        this.operand1 = renderElement(this.el, 'input', {autofocus: (this.rowNumber == 0), pattern: 'd+'});
         // "+"
         renderElement(this.el, 'span', {innerHTML: '+'});
         // operand2
-        this.operand2 = renderElement(this.el, 'input');
+        this.operand2 = renderElement(this.el, 'input', {pattern: 'd+', required: true});
         // "="
         renderElement(this.el, 'span', {innerHTML: '='});
         // answer
         this.answer = renderElement(this.el, 'input', {disabled: 'disabled', value: this.storyOfNumber});
         // feedback
-        renderElement(this.el, 'i', {className: 'fa'});
+        renderElement(this.el, 'span', {className: 'fa'});
     }
 };
 
