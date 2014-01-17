@@ -1,10 +1,22 @@
 /**
  * Created by Ashnita on 30/12/2013.
- * Trying to use the Revealing Module Pattern
+ * NumberBonds is an app that helps children learn and remember combination of numbers that add up to a number so they
+ * don't have to calculate them each time. It presents each number (numbers between 2-10 and doubles of numbers up to 20)
+ * as a story of that number (or a story of Doubles). The content is rendered by JS according to the user's selection.
  */
 window.onload = function() {
     numberBonds.init();
 };
+
+/**
+ * numberBonds follows the Revealing Module Pattern (it could be a custom object but I wanted to try this pattern).
+ * It gets the parent container where the content will be added, adds the event listener for users selection and
+ * uses the Row object to create the lines(rows) for the story selected.
+ * The content is rendered differently for "Double" or "Number" selections, eg. Double: 2 + 2 = ---, Number: --- + --- = 2
+ * A row is created (containing input and span elements for operand1 + operand2 = answer (feedback) ) for each
+ * pair of numbers that add up to the selected number (ie, n+1). Eg. The combinations for Story of 2 are:
+ * 0 + 2 = 2, 1 + 1 = 2, 2 + 0 = 2, therefore 3 rows/lines are created for the Story of 2.
+ */
 var numberBonds = function () {
     // configurable variables
     var conf = {
@@ -12,7 +24,7 @@ var numberBonds = function () {
         parentContainer: "content"
     };
 
-    var parentEl;       // the parent DOM element where the content will be displayed
+    var parentEl;       // the parent HTMLElement where the content will be displayed
     var storySelection; // will be set to the "data-num" attribute when user clicks a story selection (nav) link
     var isDouble;       // will be set if story selection is Double
 
@@ -32,7 +44,6 @@ var numberBonds = function () {
     };
 
     var handleStorySelection = function() {
-        console.dir(event);
         if (event.target.className === "storyLink") {
             storySelection = event.target.getAttribute("data-num");
             isDouble = (storySelection == conf.maxNumForDouble);
@@ -45,7 +56,6 @@ var numberBonds = function () {
         // clear the content first
         parentEl.innerHTML = "";
         // print the title of story
-        //renderElement(parentEl, 'h2', {innerHTML: 'Story Of : ' + (isDouble ? 'Double' : storySelection), className: 'storyTitle'});
         printTitle();
         // print the lines of the story
         for (var rowNum = 0; rowNum <= storySelection; rowNum++) {
@@ -55,102 +65,14 @@ var numberBonds = function () {
     };
 
     var printTitle = function() {
-        console.log(storySelection, "Story Selected (in printTitle)");
         renderElement(parentEl, 'p', {innerHTML: 'Story Of : ' + (isDouble ? 'Double' : storySelection), className: 'storyTitle'});
     };
 
     return {
+        conf: conf,
         init: init,
         parentEl: parentEl,
-        storySelection: storySelection
+        storySelection: storySelection,
+        isDouble: isDouble
     }
 }();
-
-
-function Row(i, parentEl, storyOfNumber) {
-    this.parentEl = parentEl;
-    this.el = null; // is <div> element the row is in
-    this.rowNumber = i;
-    this.isDouble = (storyOfNumber === '20');
-    this.storyOfNumber = storyOfNumber;
-    this.operand1 = null;
-    this.operand2 = null;
-    this.answer = null;
-}
-
-Row.prototype.createEquation = function() {
-    this.renderContainer();
-    this.renderRow();
-    this.addEvents();
-};
-
-Row.prototype.renderContainer = function() {
-    this.el = renderElement(this.parentEl, "div", {className: 'row'});
-};
-
-function foreach(object, action) {
-    for (var property in object) {
-        if (Object.prototype.hasOwnProperty.call(object, property)) {
-            action(property, object[property]);
-        }
-    }
-}
-
-function renderElement(parentEl, elementType, attributeList) {
-    var el = document.createElement(elementType);
-    if ( attributeList != undefined) {
-        typeof attributeList ? "object" : {};
-        foreach(attributeList, function(property, value){
-            el[property] = attributeList[property];
-        });
-    }
-    parentEl.appendChild(el);
-    return el;
-}
-
-Row.prototype.renderRow = function() {
-    if (this.isDouble == true) {
-        // operand1
-        this.operand1 = renderElement(this.el, 'input', {disabled: 'disabled', value: this.rowNumber});
-        // "+"
-        renderElement(this.el, 'span', {innerHTML: '+'});
-        // operand2
-        this.operand2 = renderElement(this.el, 'input', {disabled: 'disabled', value: this.rowNumber});
-        // "="
-        renderElement(this.el, 'span', {innerHTML: '='});
-        // answer
-        this.answer = renderElement(this.el, 'input', {autofocus: (this.rowNumber == 0),required: true, pattern: "d+"});
-        // feedback
-        renderElement(this.el, 'span', {className: 'fa'});
-    } else {
-        // operand1
-        this.operand1 = renderElement(this.el, 'input', {autofocus: (this.rowNumber == 0), pattern: 'd+'});
-        // "+"
-        renderElement(this.el, 'span', {innerHTML: '+'});
-        // operand2
-        this.operand2 = renderElement(this.el, 'input', {pattern: 'd+', required: true});
-        // "="
-        renderElement(this.el, 'span', {innerHTML: '='});
-        // answer
-        this.answer = renderElement(this.el, 'input', {disabled: 'disabled', value: this.storyOfNumber});
-        // feedback
-        renderElement(this.el, 'span', {className: 'fa'});
-    }
-};
-
-Row.prototype.checkAnswerCorrect = function() {
-    if (this.operand1.value !== '' && this.operand2.value !== '') {
-        if (parseInt(this.operand1.value) + parseInt(this.operand2.value) === parseInt(this.answer.value)) {
-            this.el.className = 'answerCorrect';
-        } else {
-            this.el.className = 'answerIncorrect';
-        }
-    }
-};
-
-Row.prototype.addEvents = function() {
-    var self = this;
-    this.el.addEventListener("change", function() {
-        self.checkAnswerCorrect();
-    });
-};

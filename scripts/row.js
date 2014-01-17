@@ -1,10 +1,19 @@
 /**
  * Created by ashnita on 16/01/2014.
  */
-function Row(i, parentEl, storyOfNumber) {
+
+/**
+ *
+ * @param rowNum contains which row number is being created, row numbers start from 0
+ * @param parentEl reference to the HTMLElement the rows are being added into
+ * @param storyOfNumber contains the users story selection, ie Story of 2 - Story of 10 ("Story of Numbers") or Double
+ * @constructor el is the reference to the div element for the row, it contains:
+ * input span+ input span= input span.fa, ie, operand1 + operand2 = answer (feedback)
+ */
+function Row(rowNum, parentEl, storyOfNumber) {
     this.parentEl = parentEl;
     this.el = null; // is <div> element the row is in
-    this.rowNumber = i;
+    this.rowNumber = rowNum;
     this.isDouble = (storyOfNumber === '20');
     this.storyOfNumber = storyOfNumber;
     this.operand1 = null;
@@ -12,16 +21,27 @@ function Row(i, parentEl, storyOfNumber) {
     this.answer = null;
 }
 
+/**
+ * Create the div element for the row,
+ * create the input and span elements (for operand1 + operand2 = answer feedback), into this row (div element),
+ * add event listener for input changes.
+ */
 Row.prototype.createEquation = function() {
     this.renderContainer();
     this.renderRow();
     this.addEvents();
 };
 
+/**
+ * Create the HTMLElement for the row (div)
+ */
 Row.prototype.renderContainer = function() {
     this.el = renderElement(this.parentEl, "div", {className: 'row'});
 };
 
+/**
+ * The content is rendered differently for "Double" or "Number" selections, eg. Double: 2 + 2 = ---, Number: --- + --- = 2
+ */
 Row.prototype.renderRow = function() {
     if (this.isDouble == true) {
         // operand1
