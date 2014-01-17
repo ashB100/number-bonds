@@ -21,20 +21,55 @@ var numberBonds = function () {
     // configurable variables
     var conf = {
         maxNumForDouble: 20,
-        parentContainer: "content"
+        randomStory: 'Random',
+        parentContainer: 'content'
     };
 
     var parentEl;       // the parent HTMLElement where the content will be displayed
     var storySelection; // will be set to the "data-num" attribute when user clicks a story selection (nav) link
     var isDouble;       // will be set if story selection is Double
 
+    var storyType = {
+        isNumber: false,
+        isDouble: false,
+        isRandom: false
+    };
+
     var init = function () {
         setParentElement();
-        addClickEvent();
+
+        document.addEventListener('click', function(event) {
+            if (event.target.className === "storyLink") {
+             event.preventDefault();
+              // Fetch the page data using the URL in the link
+              var pageURL = event.target.getAttribute('href');
+              storySelection = event.target.getAttribute('data-num');
+              var title = 'Story of' + storySelection;
+              // Update the storyContent
+              renderStorySelection(storySelection);
+              // Create a new history item.
+              history.pushState(storySelection, title, pageURL);
+            }
+        });
+
+        // Update the page content when the popstate event is called.
+        window.addEventListener('popstate', function(event) {
+            if (event.state) {
+                renderStorySelection(event.state);
+            }
+        });
 
         console.dir(parentEl);
     };
-
+    var handleStorySelection = function() {
+        if (event.target.className === "storyLink") {
+            //setStorySelection(event);
+            //setStoryType(event);
+            storySelection = event.target.getAttribute("data-num");
+            isDouble = (storySelection == conf.maxNumForDouble);
+            renderStorySelection();
+        }
+    };
     var setParentElement = function () {
         parentEl = document.getElementById(conf.parentContainer);
     };
@@ -43,20 +78,41 @@ var numberBonds = function () {
         document.addEventListener('click', handleStorySelection);
     };
 
-    var handleStorySelection = function() {
-        if (event.target.className === "storyLink") {
-            storySelection = event.target.getAttribute("data-num");
-            isDouble = (storySelection == conf.maxNumForDouble);
-            renderStory();
+
+    // the anchor element has a data-num attribute which says which story this is, 2-10 (isNumbers), 20 (isDouble),
+    // 'Random' (isRandom)
+    var setStorySelection = function(storySelection) {
+        //storySelection = event.target.getAttribute("data-num");
+        switch (storyType) {
+            case storyType.isNumber:
+                storySelection = parseInt(storySelection);
+                return storySelection;
+                break;
+            case storyType.isDouble:
+                storySelection = conf.maxNumForDouble;
+                return storySelection;
+                break;
         }
     };
 
-    var renderStory = function() {
+    var setStoryType = function(storySelection) {
+        if (storySelection === 'Doubles') {
+            storyType.isDouble = true;
+        }  else
+        if (storySelection === 'Randoms') {
+            storyType.isRandom = true;
+        } else {
+            storyType.isNumber = true;
+        }
+    };
+
+
+    var renderStorySelection = function(storySelection) {
         var row;
         // clear the content first
         parentEl.innerHTML = "";
         // print the title of story
-        printTitle();
+        printTitle(storySelection);
         // print the lines of the story
         for (var rowNum = 0; rowNum <= storySelection; rowNum++) {
             row = new Row(rowNum, parentEl, storySelection);
@@ -64,8 +120,8 @@ var numberBonds = function () {
         }
     };
 
-    var printTitle = function() {
-        renderElement(parentEl, 'p', {innerHTML: 'Story Of : ' + (isDouble ? 'Double' : storySelection), className: 'storyTitle'});
+    var printTitle = function(storySelection) {
+        renderElement(parentEl, 'p', {innerHTML: 'Story Of : ' + storySelection});
     };
 
     return {

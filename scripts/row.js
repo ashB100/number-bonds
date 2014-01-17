@@ -14,7 +14,7 @@ function Row(rowNum, parentEl, storyOfNumber) {
     this.parentEl = parentEl;
     this.el = null; // is <div> element the row is in
     this.rowNumber = rowNum;
-    this.isDouble = (storyOfNumber === '20');
+    this.isDouble = (storyOfNumber === numberBonds.conf.maxNumForDouble);
     this.storyOfNumber = storyOfNumber;
     this.operand1 = null;
     this.operand2 = null;
