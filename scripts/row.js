@@ -14,7 +14,7 @@ function Row(rowNum, parentEl, storyOfNumber) {
     this.parentEl = parentEl;
     this.el = null; // is <div> element the row is in
     this.rowNumber = rowNum;
-    this.isDouble = (storyOfNumber === numberBonds.conf.maxNumForDouble);
+    this.isDouble = (storyOfNumber === NumberBonds.conf.maxNumForDouble);
     this.storyOfNumber = storyOfNumber;
     this.operand1 = null;
     this.operand2 = null;
@@ -36,7 +36,7 @@ Row.prototype.createEquation = function() {
  * Create the HTMLElement for the row (div)
  */
 Row.prototype.renderContainer = function() {
-    this.el = renderElement(this.parentEl, "div", {className: 'row'});
+    this.el = NumberBondsUtils.renderElement(this.parentEl, "div", {className: 'row'});
 };
 
 /**
@@ -45,30 +45,30 @@ Row.prototype.renderContainer = function() {
 Row.prototype.renderRow = function() {
     if (this.isDouble == true) {
         // operand1
-        this.operand1 = renderElement(this.el, 'input', {disabled: 'disabled', value: this.rowNumber});
+        this.operand1 = NumberBondsUtils.renderElement(this.el, 'input', {disabled: 'disabled', value: this.rowNumber});
         // "+"
-        renderElement(this.el, 'span', {innerHTML: '+'});
+        NumberBondsUtils.renderElement(this.el, 'span', {innerHTML: '+'});
         // operand2
-        this.operand2 = renderElement(this.el, 'input', {disabled: 'disabled', value: this.rowNumber});
+        this.operand2 = NumberBondsUtils.renderElement(this.el, 'input', {disabled: 'disabled', value: this.rowNumber});
         // "="
-        renderElement(this.el, 'span', {innerHTML: '='});
+        NumberBondsUtils.renderElement(this.el, 'span', {innerHTML: '='});
         // answer
-        this.answer = renderElement(this.el, 'input', {autofocus: (this.rowNumber == 0),required: true, pattern: "d+"});
+        this.answer = NumberBondsUtils.renderElement(this.el, 'input', {autofocus: (this.rowNumber == 0),required: true, pattern: "d+"});
         // feedback
-        renderElement(this.el, 'span', {className: 'fa'});
+        NumberBondsUtils.renderElement(this.el, 'span', {className: 'fa'});
     } else {
         // operand1
-        this.operand1 = renderElement(this.el, 'input', {autofocus: (this.rowNumber == 0), pattern: 'd+'});
+        this.operand1 = NumberBondsUtils.renderElement(this.el, 'input', {autofocus: (this.rowNumber == 0), pattern: 'd+'});
         // "+"
-        renderElement(this.el, 'span', {innerHTML: '+'});
+        NumberBondsUtils.renderElement(this.el, 'span', {innerHTML: '+'});
         // operand2
-        this.operand2 = renderElement(this.el, 'input', {pattern: 'd+', required: true});
+        this.operand2 = NumberBondsUtils.renderElement(this.el, 'input', {pattern: 'd+', required: true});
         // "="
-        renderElement(this.el, 'span', {innerHTML: '='});
+        NumberBondsUtils.renderElement(this.el, 'span', {innerHTML: '='});
         // answer
-        this.answer = renderElement(this.el, 'input', {disabled: 'disabled', value: this.storyOfNumber});
+        this.answer = NumberBondsUtils.renderElement(this.el, 'input', {disabled: 'disabled', value: this.storyOfNumber});
         // feedback
-        renderElement(this.el, 'span', {className: 'fa'});
+        NumberBondsUtils.renderElement(this.el, 'span', {className: 'fa'});
     }
 };
 

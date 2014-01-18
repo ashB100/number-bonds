@@ -5,7 +5,7 @@
  * as a story of that number (or a story of Doubles). The content is rendered by JS according to the user's selection.
  */
 window.onload = function() {
-    numberBonds.init();
+    NumberBonds.init();
 };
 
 /**
@@ -17,7 +17,7 @@ window.onload = function() {
  * pair of numbers that add up to the selected number (ie, n+1). Eg. The combinations for Story of 2 are:
  * 0 + 2 = 2, 1 + 1 = 2, 2 + 0 = 2, therefore 3 rows/lines are created for the Story of 2.
  */
-var numberBonds = function () {
+var NumberBonds = function () {
     // configurable variables
     var conf = {
         maxNumForDouble: 20,
@@ -82,17 +82,15 @@ var numberBonds = function () {
     // the anchor element has a data-num attribute which says which story this is, 2-10 (isNumbers), 20 (isDouble),
     // 'Random' (isRandom)
     var setStorySelection = function(storySelection) {
-        //storySelection = event.target.getAttribute("data-num");
         switch (storyType) {
             case storyType.isNumber:
                 storySelection = parseInt(storySelection);
-                return storySelection;
                 break;
             case storyType.isDouble:
                 storySelection = conf.maxNumForDouble;
-                return storySelection;
                 break;
         }
+        return storySelection;
     };
 
     var setStoryType = function(storySelection) {
@@ -121,7 +119,7 @@ var numberBonds = function () {
     };
 
     var printTitle = function(storySelection) {
-        renderElement(parentEl, 'p', {innerHTML: 'Story Of : ' + storySelection});
+        NumberBondsUtils.renderElement(parentEl, 'p', {innerHTML: 'Story Of : ' + storySelection});
     };
 
     return {

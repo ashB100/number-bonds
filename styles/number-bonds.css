@@ -86,10 +86,10 @@ nav li:nth-child(odd) a:hover {
 .row.answerIncorrect i.fa:after {
     content: "\f088";
 }
-.answerCorrect i.fa::after{
+.answerCorrect span.fa::after{
     content: "\f00c";
 }
-.answerIncorrect i.fa::after{
+.answerIncorrect span.fa::after{
     content: "\f088";
 }
 #content {
