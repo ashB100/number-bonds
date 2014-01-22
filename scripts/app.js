@@ -21,38 +21,23 @@ var NumberBonds = function () {
     // configurable variables
     var conf = {
         maxNumForDouble: 20,
-        randomStory: 'Random',
+        storyOfRandoms: 'Randoms',
+        storyOfDoubles: 'Doubles',
         parentContainer: 'content'
     };
 
-    var parentEl;       // the parent HTMLElement where the content will be displayed
-    var storySelection; // will be set to the "data-num" attribute when user clicks a story selection (nav) link
-    var isDouble;       // will be set if story selection is Double
-
-    var storyType = {
-        isNumber: false,
-        isDouble: false,
-        isRandom: false
-    };
+    var parentEl; // reference to the parent HTMLElement where the content will be displayed
+    var scoreEl;  // reference to the HTMLElement where score is displayed
+    var score = 0;
 
     var init = function () {
         setParentElement();
 
-        document.addEventListener('click', function(event) {
-            if (event.target.className === "storyLink") {
-             event.preventDefault();
-              // Fetch the page data using the URL in the link
-              var pageURL = event.target.getAttribute('href');
-              storySelection = event.target.getAttribute('data-num');
-              var title = 'Story of' + storySelection;
-              // Update the storyContent
-              renderStorySelection(storySelection);
-              // Create a new history item.
-              history.pushState(storySelection, title, pageURL);
-            }
-        });
+        // Update the page content when the click event is called. Use event bubbling so listener can be on document itself
+        document.addEventListener('click', handleStorySelection);
 
-        // Update the page content when the popstate event is called.
+        // Update the page content when the popstate event is called. event.state will be undefined until user has
+        // clicked on a navigation option.
         window.addEventListener('popstate', function(event) {
             if (event.state) {
                 renderStorySelection(event.state);
@@ -61,49 +46,26 @@ var NumberBonds = function () {
 
         console.dir(parentEl);
     };
-    var handleStorySelection = function() {
-        if (event.target.className === "storyLink") {
-            //setStorySelection(event);
-            //setStoryType(event);
-            storySelection = event.target.getAttribute("data-num");
-            isDouble = (storySelection == conf.maxNumForDouble);
-            renderStorySelection();
-        }
-    };
+
+    // Set a reference to the parent element, where we'll add our story content. The id is configurable and is stored
+    // in the conf variable.
     var setParentElement = function () {
         parentEl = document.getElementById(conf.parentContainer);
     };
 
-    var addClickEvent = function() {
-        document.addEventListener('click', handleStorySelection);
-    };
-
-
-    // the anchor element has a data-num attribute which says which story this is, 2-10 (isNumbers), 20 (isDouble),
-    // 'Random' (isRandom)
-    var setStorySelection = function(storySelection) {
-        switch (storyType) {
-            case storyType.isNumber:
-                storySelection = parseInt(storySelection);
-                break;
-            case storyType.isDouble:
-                storySelection = conf.maxNumForDouble;
-                break;
-        }
-        return storySelection;
-    };
-
-    var setStoryType = function(storySelection) {
-        if (storySelection === 'Doubles') {
-            storyType.isDouble = true;
-        }  else
-        if (storySelection === 'Randoms') {
-            storyType.isRandom = true;
-        } else {
-            storyType.isNumber = true;
+    var handleStorySelection = function() {
+        if (event.target.className === "storyLink") {
+            event.preventDefault();
+            // Fetch the page data using the URL in the link
+            var pageURL = event.target.getAttribute('href');
+            var storySelection = event.target.getAttribute('data-num');
+            var title = 'Story of ' + storySelection;
+            // Update the storyContent
+            renderStorySelection(storySelection);
+            // Create a new history item.
+            history.pushState(storySelection, title, pageURL);
         }
     };
-
 
     var renderStorySelection = function(storySelection) {
         var row;
@@ -112,21 +74,33 @@ var NumberBonds = function () {
         // print the title of story
         printTitle(storySelection);
         // print the lines of the story
-        for (var rowNum = 0; rowNum <= storySelection; rowNum++) {
-            row = new Row(rowNum, parentEl, storySelection);
+
+        for (var rowNumber = 0; rowNumber <= storySelection; rowNumber++) {
+            if (storySelection == 1) {
+                rowNumber ++;
+            }
+            row = new Row(rowNumber, parentEl, storySelection);
             row.createEquation();
         }
+        // create container for score display
+        scoreEl = NumberBondsUtils.renderElement(parentEl,'p',{id: 'score', innerHTLM: 'Score: '});
+        console.log(scoreEl);
     };
 
     var printTitle = function(storySelection) {
-        NumberBondsUtils.renderElement(parentEl, 'p', {innerHTML: 'Story Of : ' + storySelection});
+        var title = 'Story Of: ' + storySelection;
+        if (storySelection == 1) {
+            title = 'Story Of: Randomly Generated Numbers';
+        } else if(storySelection == 20) {
+            title = 'Story of: Doubles';
+        }
+        NumberBondsUtils.renderElement(parentEl, 'p', {innerHTML: title});
     };
 
     return {
         conf: conf,
         init: init,
-        parentEl: parentEl,
-        storySelection: storySelection,
-        isDouble: isDouble
+        scoreEl: scoreEl,
+        score: score
     }
 }();

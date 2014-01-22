@@ -79,11 +79,11 @@ nav li:nth-child(odd) a:hover {
 .row {
     padding: 1px;
 }
-.row.answerCorrect i.fa:after {
+.row.answerCorrect span.fa:after {
     content: "\f00c";
 }
 
-.row.answerIncorrect i.fa:after {
+.row.answerIncorrect span.fa:after {
     content: "\f088";
 }
 .answerCorrect span.fa::after{

@@ -33,8 +33,15 @@ var renderElement = function(parentEl, elementType, attributeList) {
     parentEl.appendChild(el);
     return el;
 };
+
+    // Returns a random integer between min and max
+    var getRandomInt = function(min, max) {
+        return Math.floor(Math.random() * (max - min + 1) + min);
+    };
+
     return {
         foreach: foreach,
-        renderElement: renderElement
+        renderElement: renderElement,
+        getRandomInt: getRandomInt
     }
 } ();
