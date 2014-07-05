@@ -64,7 +64,7 @@ Row.prototype.renderRow = function() {
     } else if(this.storyOfNumber == 1) {
         this.addARandomRow();
 
-        // keep count of and display problems attempted
+        // keep count of and display questions attempted
         // display countdown of time elapsed
 
     } else {
@@ -120,6 +120,7 @@ Row.prototype.checkAnswerCorrect = function() {
                 // increment score
                 NumberBonds.score ++;
             }
+
         } else {
             // set the row's class to 'answerIncorrect'
             this.el.classList.remove('answerCorrect');
@@ -133,7 +134,7 @@ Row.prototype.checkAnswerCorrect = function() {
         if (this.storyOfNumber == 1 ) {
             scoreEl.innerHTML = 'Score: ' + this.score + '/' + this.randomNumCount;
         } else {
-            scoreEl.innerHTML = 'Score: ' + NumberBonds.score + '/' + this.storyOfNumber;
+            scoreEl.innerHTML = 'Score: ' + NumberBonds.score + '/' + (parseInt(this.storyOfNumber) + 1);
         }
     }
 };

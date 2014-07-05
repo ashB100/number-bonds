@@ -1,52 +1,36 @@
-/*#wrapper {*/
-    /*margin-right: auto;*/
-    /*margin-left: auto;*/
-    /*width: 96%; *//* Holding outermost DIV */
-/*}*/
-
-header {
-    background-position: 0 top;
-    background-repeat: repeat-x;
-    /*background-image: url(buntingFW.png); */
-    margin-right: 1.0416667%; /* 10/960*/
-    margin-left: 1.0416667%;
-    width: 97.91666667%; /* 940/960 */
+/* Holding outermost DIV */
+#wrapper {
+    margin-right: auto;
+    margin-left: auto;
+    width: 96%;
 }
-
-/*header a {*/
-    /*text-decoration: none;*/
-/*}*/
+body {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #333333;
+}
 
 #logo {
+    background-image: url('../imgs/nb.jpg');
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: left top;
     display: block;
-    padding-top: 75px;
-    color: #0d0c0c;
+    padding: 100px 0;
+    /*color: #0d0c0c;
     text-transform: uppercase;
     font-family: 'BebasNeueRegular';
-    font-size: 3em; /* 48/16 */
+    font-size: 3em; */
 }
 
-#logo span {color: #dfdada;}
-
 nav {
-    padding-bottom: 25px;
-    margin-top: 26px;
-    margin-left: -1.0416667%; /* 10/960 */
-    padding-right: 1.0416667%; /* 10/960 */
-    padding-left: 1.0416667%; /* 10/960 */
-    width: 97.91666667%; /* 940/960 */
-    background-repeat: repeat-x;
-    /* background-image: url(atwiNavBg.png); */
+    padding: 10px 0;
     border-bottom-color: #bfbfbf;
     border-bottom-style: double;
-    border-bottom-width: 4px;
-    background: linear-gradient(top, hsla(0,0%,100%,0.11) 0%,
-    hsla(0,0%,94%,0.11) 10%,
-    hsla(0,0%,84%,0.11) 22%,
-    hsla(0,0%,62%,0.11) 41%,
-    hsla(0,0%,38%,0.11) 61%,
-    hsla(0,0%,22%,0.11) 76%,
-    hsla(0,0%,10%,0.11) 88%,hsla(0,0%,1%,0.11) 100%);
+    border-bottom-width: 2px;
+
+
 }
 nav ul li {
     display: inline-block;
@@ -55,12 +39,11 @@ nav ul li {
 
 nav ul li a {
     height: 42px;
-    line-height: 42px;
     text-decoration: none;
     text-transform: uppercase;
     font: 1.875em/42px 'BebasNeueRegular';
-    color: black;
-    text-shadow: 0 1px 0 hsla(0, 0%, 100%, 1.0);
+    color: hsl(240, 50%, 50%);
+    text-shadow: 0 1px 10px hsla(0, 0%, 100%, 1.0);
 }
 
 nav ul li a:hover {
@@ -68,7 +51,6 @@ nav ul li a:hover {
 }
 
 nav li:nth-child(odd) a {
-    color: #fe0208;
     color: hsl(359, 99%, 50%);
 }
 
@@ -76,8 +58,9 @@ nav li:nth-child(odd) a:hover {
     color: hsl(359, 99%, 40%);
 }
 
-.row {
-    padding: 1px;
+.row{
+    margin: 0 10px;
+    padding-bottom: 1px;
 }
 .row.answerCorrect span.fa:after {
     content: "\f00c";
@@ -93,12 +76,10 @@ nav li:nth-child(odd) a:hover {
     content: "\f088";
 }
 #content {
-    border: 2px solid purple;
-    padding: 1em;
-    float: right;
+    text-align: center;
     width: 100%;
     height: 100%;
-    background: rosybrown;
+    background: skyblue;
 }
 
 #sidebar {

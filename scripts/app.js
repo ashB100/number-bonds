@@ -10,7 +10,7 @@ window.onload = function() {
 
 /**
  * numberBonds follows the Revealing Module Pattern (it could be a custom object but I wanted to try this pattern).
- * It gets the parent container where the content will be added, adds the event listener for users selection and
+ * It gets the parent container where the content will be added, adds the event listener for users' selection and
  * uses the Row object to create the lines(rows) for the story selected.
  * The content is rendered differently for "Double" or "Number" selections, eg. Double: 2 + 2 = ---, Number: --- + --- = 2
  * A row is created (containing input and span elements for operand1 + operand2 = answer (feedback) ) for each
@@ -43,7 +43,6 @@ var NumberBonds = function () {
                 renderStorySelection(event.state);
             }
         });
-
         console.dir(parentEl);
     };
 
