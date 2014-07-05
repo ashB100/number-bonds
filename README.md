@@ -9,10 +9,15 @@ don't have to calculate them each time.
 ###Players can choose to play: 
 * "Story of Numbers", which presents numbers between 2-10 as a stories and players have to enter every combination that adds up to that number. 
 
-E.g. Story of Two
-     0 + 2 = 2
-     1 + 1 = 2
-     2 + 0 = 2
+     Example:  
+     **Story of Two** 
+
+     0 + 2 = 2  
+     
+     1 + 1 = 2  
+     
+     2 + 0 = 2  
+     
      
 * "Story of Doubles" - players have to give the doubles of numbers between 0-20
 * "Story of Random Numbers" - generates random numbers between 0-10 for players to add. 
