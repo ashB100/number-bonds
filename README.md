@@ -6,8 +6,8 @@ don't have to calculate them each time.
 
 ##How it works.
 
-###Players can choose to do: 
-* "Story of Numbers" - presents numbers between 2-10 as a story of that number, players have to enter every combination that adds up to that number. 
+###Players can choose to play: 
+* "Story of Numbers", which presents numbers between 2-10 as a stories and players have to enter every combination that adds up to that number. 
 
 E.g. Story of Two
      0 + 2 = 2
