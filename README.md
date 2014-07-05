@@ -7,7 +7,7 @@ don't have to calculate them each time.
 ##How it works.
 
 ###Players can choose to play: 
-* "Story of Numbers", which presents numbers between 2-10 as a stories and players have to enter every combination that adds up to that number. 
+* **"Story of Numbers"**, which presents numbers between 2-10 as a stories and players have to enter every combination that adds up to that number. 
 
      Example:  
      **Story of Two** 
@@ -19,8 +19,8 @@ don't have to calculate them each time.
      2 + 0 = 2  
      
      
-* "Story of Doubles" - players have to give the doubles of numbers between 0-20
-* "Story of Random Numbers" - generates random numbers between 0-10 for players to add. 
+* **"Story of Doubles"** - players have to give the doubles of numbers between 0-20
+* **"Story of Random Numbers"** - generates random numbers between 0-10 for players to add. 
 
 Feedback is given to the player as to whether they got a calculaion correct.
 
