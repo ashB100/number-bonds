@@ -4,23 +4,25 @@
 
 /**
  *
- * @param rowNum contains which row number is being created, row numbers start from 0
- * @param parentEl reference to the HTMLElement the rows are being added into
- * @param storyOfNumber contains the users story selection, ie Story of 2 - Story of 10 ("Story of Numbers") or Double
- * @constructor el is the reference to the div element for the row, it contains:
+ * @param rowNum: keeps track of the row number that is being created, row numbers start from 0
+ * @param parentEl: reference to the HTMLElement the rows are being added into
+ * @param storyOfNumber: data-num value for the users story selection, "Story of Numbers"(2-10), "Double"(20), "Random"(1)
+ * @constructor el: is the reference to the div element for the row, it contains:
  * input span+ input span= input span.fa, ie, operand1 + operand2 = answer (feedback)
  */
 function Row(rowNum, parentEl, storyOfNumber) {
-    this.parentEl = parentEl;
-    this.el = null; // is <div> element the row is in
+    'use strict';
     this.rowNumber = rowNum;
-    this.isDouble = (storyOfNumber == NumberBonds.conf.maxNumForDouble);
+    this.parentEl = parentEl;
     this.storyOfNumber = storyOfNumber;
+
+    this.el = null; // is <div> element the row is in
     this.operand1 = null;
     this.operand2 = null;
     this.answer = null;
     this.rowIsCorrect = false;
     this.numberOfTimesChanged = 0;
+    this.isDouble = (storyOfNumber === NumberBonds.conf.maxNumForDouble);
     this.score = 0;
     this.randomNumCount = 0;
 }
@@ -31,6 +33,7 @@ function Row(rowNum, parentEl, storyOfNumber) {
  * add event listener for input changes.
  */
 Row.prototype.createEquation = function() {
+    'use strict';
     this.renderContainer();
     this.renderRow();
     this.addEvents();
@@ -41,14 +44,16 @@ Row.prototype.createEquation = function() {
  * Create the HTMLElement for the row (div)
  */
 Row.prototype.renderContainer = function() {
-    this.el = NumberBondsUtils.renderElement(this.parentEl, "div", {className: 'row'});
+    'use strict';
+    this.el = NumberBondsUtils.renderElement(this.parentEl, 'div', {className: 'row'});
 };
 
 /**
  * The content is rendered differently for "Double" or "Number" selections, eg. Double: 2 + 2 = ---, Number: --- + --- = 2
  */
 Row.prototype.renderRow = function() {
-    if (this.isDouble == true) {
+    'use strict';
+    if (this.isDouble === true) {
         // operand1
         this.operand1 = NumberBondsUtils.renderElement(this.el, 'input', {disabled: 'disabled', value: this.rowNumber});
         // "+"
@@ -58,10 +63,10 @@ Row.prototype.renderRow = function() {
         // "="
         NumberBondsUtils.renderElement(this.el, 'span', {innerHTML: '='});
         // answer
-        this.answer = NumberBondsUtils.renderElement(this.el, 'input', {autofocus: (this.rowNumber == 0),required: 'required', pattern: '[0-9]'});
+        this.answer = NumberBondsUtils.renderElement(this.el, 'input', {autofocus: (this.rowNumber === 0),required: 'required', pattern: '[0-9]'});
         // feedback
         NumberBondsUtils.renderElement(this.el, 'span', {className: 'fa'});
-    } else if(this.storyOfNumber == 1) {
+    } else if(this.storyOfNumber === 1) {
         this.addARandomRow();
 
         // keep count of and display questions attempted
@@ -69,7 +74,7 @@ Row.prototype.renderRow = function() {
 
     } else {
         // operand1
-        this.operand1 = NumberBondsUtils.renderElement(this.el, 'input', {autofocus: (this.rowNumber == 0), pattern: 'd+'});
+        this.operand1 = NumberBondsUtils.renderElement(this.el, 'input', {autofocus: (this.rowNumber === 0), pattern: 'd+'});
         // "+"
         NumberBondsUtils.renderElement(this.el, 'span', {innerHTML: '+'});
         // operand2
@@ -84,6 +89,7 @@ Row.prototype.renderRow = function() {
 };
 
 Row.prototype.addARandomRow = function() {
+    'use strict';
     var val1 = NumberBondsUtils.getRandomInt(1,5);
     var val2 = NumberBondsUtils.getRandomInt(1,10);
     this.el.innerHTML = '';
@@ -97,12 +103,13 @@ Row.prototype.addARandomRow = function() {
     // "="
     NumberBondsUtils.renderElement(this.el, 'span', {innerHTML: '='});
     // answer
-    this.answer = NumberBondsUtils.renderElement(this.el, 'input', {autofocus: (this.rowNumber == 1)});
+    this.answer = NumberBondsUtils.renderElement(this.el, 'input', {autofocus: (this.rowNumber === 1)});
     // feedback
     NumberBondsUtils.renderElement(this.el, 'span', {className: 'fa'});
 };
 
 Row.prototype.checkAnswerCorrect = function() {
+    'use strict';
     var scoreEl = document.getElementById('score');
     // if both operand1 and operand2 are entered
     if (this.operand1.value !== '' && this.operand2.value !== '') {
@@ -112,13 +119,13 @@ Row.prototype.checkAnswerCorrect = function() {
             this.el.classList.remove('answerIncorrect');
             this.el.classList.add('answerCorrect');
             this.rowIsCorrect = true;
-            if (this.storyOfNumber == 1) {
+            if (this.storyOfNumber === 1) {
                 this.score ++;
             }
             // if answer correct and number of times changed is 1
-            if (this.rowIsCorrect && this.numberOfTimesChanged == 1) {
+            if (this.rowIsCorrect && this.numberOfTimesChanged === 1) {
                 // increment score
-                NumberBonds.score ++;
+                ++NumberBonds.score;
             }
 
         } else {
@@ -131,7 +138,7 @@ Row.prototype.checkAnswerCorrect = function() {
                 NumberBonds.score -= 1;
             }
         }
-        if (this.storyOfNumber == 1 ) {
+        if (this.storyOfNumber === 1 ) {
             scoreEl.innerHTML = 'Score: ' + this.score + '/' + this.randomNumCount;
         } else {
             scoreEl.innerHTML = 'Score: ' + NumberBonds.score + '/' + (parseInt(this.storyOfNumber) + 1);
@@ -146,9 +153,10 @@ Row.prototype.validateInput = function() {
 };
 
 Row.prototype.addEvents = function() {
+    'use strict';
     var self = this;
 
-    this.el.addEventListener("change", function() {
+    this.el.addEventListener('change', function() {
         self.checkAnswerCorrect();
     });
 
@@ -157,9 +165,9 @@ Row.prototype.addEvents = function() {
     });
 
     // Add an event for enter key press for 'Story of Random Numbers', if field is empty don't accept enter press
-    if(this.storyOfNumber == 1) {
+    if(this.storyOfNumber === 1) {
         this.el.addEventListener('keypress', function() {
-            if (event.keyCode == 13) {
+            if (event.keyCode === 13) {
                 self.addARandomRow();
             }
         });
