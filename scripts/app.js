@@ -4,105 +4,76 @@
  * don't have to calculate them each time. It presents each number (numbers between 2-10 and doubles of numbers up to 20)
  * as a story of that number (or a story of Doubles). The content is rendered by JS according to the user's selection.
  */
-
+/** Refactored to create NumberBonds namespace with App, Story and Utilities modules in this namespace, on 19/07/2014...*/
 
 /**
- * numberBonds follows the Revealing Module Pattern (it could be a custom object but I wanted to try this pattern).
- * It gets the parent container where the content will be added, adds the event listener for users' selection and
+ * NumberBonds follows the Revealing Module Pattern. For namespacing, it has NumberBonds as main module with following
+ * modules in it: App, Story, Lines and Utilities
+ *
+ * The application gets the parent container where the content will be added, adds the event listener for users' selection and
  * uses the Row object to create the lines(rows) for the story selected.
  * The content is rendered differently for "Double" or "Number" selections, eg. Double: 2 + 2 = ---, Number: --- + --- = 2
  * A row is created (containing input and span elements for operand1 + operand2 = answer (feedback) ) for each
  * pair of numbers that add up to the selected number (ie, n+1). Eg. The combinations for Story of 2 are:
  * 0 + 2 = 2, 1 + 1 = 2, 2 + 0 = 2, therefore 3 rows/lines are created for the Story of 2.
  */
-var NumberBonds = (function () {
+
+
+var NumberBonds = NumberBonds || {};
+
+/**
+ * @param Story{Object} The Story Module is passed in as a dependency
+ */
+NumberBonds.App = (function(Story) {
     'use strict';
-    // configurable variables
     var conf = {
         maxNumForDouble: 20,
         storyOfRandoms: 'Randoms',
-        storyOfDoubles: 'Doubles',
-        parentContainer: 'content'
+        storyOfDoubles: 'Doubles'
     };
 
-    var parentEl, // reference to the parent HTMLElement where the content will be displayed
-        scoreEl,  // reference to the HTMLElement where score is displayed
-        score = 0;
-
-    var init = function () {
-        parentEl = document.getElementById(conf.parentContainer);
+    /**
+     * @param containerEl{Object} HTMLElement where the content will be rendered
+     */
+    var init = function(containerEl) {
+        console.log('NumberBonds from init: ' + NumberBonds);
+        NumberBonds.Story.setContainer(containerEl);
 
         // Update the page content when the click event is called. Use event bubbling so listener can be on document itself
-        document.addEventListener('click', handleStorySelection);
+        document.addEventListener('click', function() {
+            if (event.target.className === 'storyLink') {
+                event.preventDefault();
+                // Fetch the page data using the URL in the link
+                var pageURL = event.target.getAttribute('href'),
+                    storySelection = parseInt(event.target.getAttribute('data-num')),
+                    title = 'Story of ' + storySelection;
+                // Update the storyContent
+                NumberBonds.Story.renderStorySelection(storySelection);
+                // Create a new history item.
+                history.pushState(storySelection, title, pageURL);
+            }
+        });
 
         // Update the page content when the popstate event is called. event.state will be undefined until user has
         // clicked on a navigation option.
         window.addEventListener('popstate', function(event) {
             if (event.state) {
-                renderStorySelection(event.state);
+                Story.renderStorySelection(event.state);
             }
         });
-        console.dir(parentEl);
-    };
 
-
-
-    var handleStorySelection = function() {
-        if (event.target.className === 'storyLink') {
-            event.preventDefault();
-            // Fetch the page data using the URL in the link
-            var pageURL = event.target.getAttribute('href'),
-                storySelection = event.target.getAttribute('data-num'),
-                title = 'Story of ' + storySelection;
-            // Update the storyContent
-            renderStorySelection(storySelection);
-            // Create a new history item.
-            history.pushState(storySelection, title, pageURL);
-        }
-    };
-
-    var renderStorySelection = function(storySelection) {
-        var row;
-        // clear the content first
-        parentEl.innerHTML = '';
-
-        // print the title of story
-        printTitle(storySelection);
-
-        // print the lines of the story (0-rowNumber, except for Random Numbers which only has one row)
-        for (var rowNumber = 0; rowNumber <= storySelection; rowNumber++) {
-            // storySelection 1 is for Story of Random Numbers. Adjust rowNumber so only one row gets created
-            if (storySelection === 1) {
-                ++rowNumber;
-            }
-            row = new Row(rowNumber, parentEl, storySelection);
-            row.createEquation();
-        }
-
-        // create container for score display
-        scoreEl = NumberBondsUtils.renderElement(parentEl,'p',{id: 'score', innerHTLM: 'Score: '});
-        console.log(scoreEl);
-    };
-
-    var printTitle = function(storySelection) {
-        var title = 'Story Of: ' + storySelection;
-        if (storySelection === 1) {
-            title = 'Story Of: Randomly Generated Numbers';
-        } else if(storySelection === 20) {
-            title = 'Story of: Doubles';
-        }
-        NumberBondsUtils.renderElement(parentEl, 'p', {innerHTML: title});
     };
 
     return {
         conf: conf,
-        init: init,
-        scoreEl: scoreEl,
-        score: score
+        init: init
     };
-})();
+})(NumberBonds.Story);
 
+
+// Call the App.init function once the DOM is ready
 window.onload = function() {
     'use strict';
-    NumberBonds.init();
+
+    NumberBonds.App.init(document.getElementById('content'));
 };

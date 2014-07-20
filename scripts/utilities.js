@@ -1,7 +1,10 @@
 /**
  * Created by ashnita on 16/01/2014.
  */
-var NumberBondsUtils = (function() {
+var NumberBonds = NumberBonds || {};
+
+NumberBonds.Utilities = (function() {
+    'use strict';
     /**
      * Iterates over the own properties of a given object and calls the (higher order) function which is passed in as action
      * @param object is the object which we want to enumerate
@@ -44,4 +47,4 @@ var NumberBondsUtils = (function() {
         renderElement: renderElement,
         getRandomInt: getRandomInt
     };
-}) ();
+})();
