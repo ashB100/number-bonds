@@ -32,6 +32,20 @@ NumberBonds.App = (function(Story) {
         storyOfDoubles: 'Doubles'
     };
 
+    var handleStorySelection = function() {
+        if (event.target.className === 'storyLink') {
+            event.preventDefault();
+            // Fetch the page data using the URL in the link
+            var pageURL = event.target.getAttribute('href'),
+                storySelection = parseInt(event.target.getAttribute('data-num'), 10),
+                title = 'Story of ' + storySelection;
+            // Update the storyContent
+            NumberBonds.Story.renderStorySelection(storySelection);
+            // Create a new history item.
+            history.pushState(storySelection, title, pageURL);
+        }
+    };
+
     /**
      * @param containerEl{Object} HTMLElement where the content will be rendered
      */
@@ -40,19 +54,7 @@ NumberBonds.App = (function(Story) {
         NumberBonds.Story.setContainer(containerEl);
 
         // Update the page content when the click event is called. Use event bubbling so listener can be on document itself
-        document.addEventListener('click', function() {
-            if (event.target.className === 'storyLink') {
-                event.preventDefault();
-                // Fetch the page data using the URL in the link
-                var pageURL = event.target.getAttribute('href'),
-                    storySelection = parseInt(event.target.getAttribute('data-num')),
-                    title = 'Story of ' + storySelection;
-                // Update the storyContent
-                NumberBonds.Story.renderStorySelection(storySelection);
-                // Create a new history item.
-                history.pushState(storySelection, title, pageURL);
-            }
-        });
+        document.addEventListener('click', handleStorySelection);
 
         // Update the page content when the popstate event is called. event.state will be undefined until user has
         // clicked on a navigation option.
