@@ -2,22 +2,23 @@
 <html>
 <head>
     <meta charset=utf-8>
+    <meta name="viewport" content="initial-scale=1.0">
     <title>Ashnita Bonds</title>
 
     <!--<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script> -->
 
     <!-- css stylesheets -->
-    <link href="styles/normalize.css" type="text/css" rel="stylesheet">
     <link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
-    <link href="styles/number-bonds.css" type="text/css" rel="stylesheet">
+    <link href="scss/application.css" type="text/css" rel="stylesheet">
 
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-    <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <script src="Vendors/html5shiv.js"></script>
+    <script src="Vendors/respond.js"></script>
     <![endif]-->
+    <script src="Vendors/prefixfree.min.js"></script>
 
     <!-- javascript-->
     <script src="scripts/utilities.js"></script>
@@ -28,9 +29,9 @@
 </head>
 <body>
 <div id="wrapper">
-    <header>
+    <header role="banner">
         <div id="logo"></div>
-        <nav>
+        <nav role="navigation">
             <ul>
                 <li><a class="storyLink" data-num="2" href="#StoryOf2">Story of 2</a></li>
                 <li><a class="storyLink" data-num="3" href="#StoryOf3">Story of 3</a></li>
@@ -46,11 +47,15 @@
             </ul>
         </nav>
     </header>
-    <div>
+    <section role="main">
+        <div id="title"></div>
         <div id="content"></div>
-    </div>
+        <div id="score"></div>
+    </section>
+    <aside role="complementary">
 
-    <footer>
+    </aside>
+    <footer role="contentinfo">
 
     </footer>
 
