@@ -31,11 +31,20 @@ NumberBonds.App = (function() {
         storyOfNumbers: {storyNumber: [2, 3, 4, 5, 6, 7, 8, 9, 10], storyType: 'Numbers'}
     };
 
+    // getPageURL
+
+    // getStorySelection
+
+    // getTitle
+
+    // getStoryType
     var getStoryType = function(storySelection) {
         return (storySelection===conf.storyOfRandoms.storyNumber) ? conf.storyOfRandoms.storyType
             : (storySelection===conf.storyOfDoubles.storyNumber) ? conf.storyOfDoubles.storyType
             : conf.storyOfNumbers.storyType;
     };
+
+    // createNewStory
 
     /**
      * @param containerEl{Object} HTMLElement where the content will be rendered
@@ -46,7 +55,6 @@ NumberBonds.App = (function() {
         document.addEventListener('click', function() {
             if (event.target.className === 'storyLink') {
                 event.preventDefault();
-
                 var pageURL = event.target.getAttribute('href'), // Fetch the page data using the URL in the link
                     storySelection = parseInt(event.target.getAttribute('data-num'), 10),
                     title = 'Story of ' + storySelection,
@@ -54,18 +62,23 @@ NumberBonds.App = (function() {
                     story = new NumberBonds.Story(containerEl, storySelection, storyType);
 
                 // Update the storyContent
-                story.init(storySelection);
+                story.init();
 
-                // Create a new history item.
+                // Create a new browser history entry, passing in the storySelection as the stateObject, title and URL
+                // to display in the address bar.
                 history.pushState(storySelection, title, pageURL);
             }
         });
 
-        // Update the page content when the popstate event is called. event.state will be undefined until user has
-        // clicked on a navigation option.
+        // The popstate event is fired on window when the active history entry changes, ie, when the browsers back or
+        // forward buttons are clicked. The event passed into the listener callback contains a state property that is
+        // used to retrieve the state object that is associated with the history entry.
         window.addEventListener('popstate', function(event) {
+            // event.state will be undefined until user has clicked on a navigation option.
             if (event.state) {
-                NumberBonds.Story.init(event.state);
+                // I simply recreate the rows for the story at the moment
+                var story = new NumberBonds.Story(containerEl, event.state, getStoryType(event.state));
+                story.init();
             }
         });
 
