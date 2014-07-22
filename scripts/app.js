@@ -21,46 +21,51 @@
 
 var NumberBonds = NumberBonds || {};
 
-/**
- * @param Story{Object} The Story Module is passed in as a dependency
- */
-NumberBonds.App = (function(Story) {
+NumberBonds.App = (function() {
     'use strict';
+
     var conf = {
         maxNumForDouble: 20,
-        storyOfRandoms: 'Randoms',
-        storyOfDoubles: 'Doubles'
+        storyOfRandoms: {storyNumber: 1, storyType: 'Randoms'},
+        storyOfDoubles: {storyNumber: 20, storyType: 'Doubles'},
+        storyOfNumbers: {storyNumber: [2, 3, 4, 5, 6, 7, 8, 9, 10], storyType: 'Numbers'}
     };
 
-    var handleStorySelection = function() {
-        if (event.target.className === 'storyLink') {
-            event.preventDefault();
-            // Fetch the page data using the URL in the link
-            var pageURL = event.target.getAttribute('href'),
-                storySelection = parseInt(event.target.getAttribute('data-num'), 10),
-                title = 'Story of ' + storySelection;
-            // Update the storyContent
-            NumberBonds.Story.renderStorySelection(storySelection);
-            // Create a new history item.
-            history.pushState(storySelection, title, pageURL);
-        }
+    var getStoryType = function(storySelection) {
+        return (storySelection===conf.storyOfRandoms.storyNumber) ? conf.storyOfRandoms.storyType
+            : (storySelection===conf.storyOfDoubles.storyNumber) ? conf.storyOfDoubles.storyType
+            : conf.storyOfNumbers.storyType;
     };
 
     /**
      * @param containerEl{Object} HTMLElement where the content will be rendered
      */
     var init = function(containerEl) {
-        console.log('NumberBonds from init: ' + NumberBonds);
-        NumberBonds.Story.setContainer(containerEl);
 
         // Update the page content when the click event is called. Use event bubbling so listener can be on document itself
-        document.addEventListener('click', handleStorySelection);
+        document.addEventListener('click', function() {
+            if (event.target.className === 'storyLink') {
+                event.preventDefault();
+
+                var pageURL = event.target.getAttribute('href'), // Fetch the page data using the URL in the link
+                    storySelection = parseInt(event.target.getAttribute('data-num'), 10),
+                    title = 'Story of ' + storySelection,
+                    storyType = getStoryType(storySelection),
+                    story = new NumberBonds.Story(containerEl, storySelection, storyType);
+
+                // Update the storyContent
+                story.init(storySelection);
+
+                // Create a new history item.
+                history.pushState(storySelection, title, pageURL);
+            }
+        });
 
         // Update the page content when the popstate event is called. event.state will be undefined until user has
         // clicked on a navigation option.
         window.addEventListener('popstate', function(event) {
             if (event.state) {
-                Story.renderStorySelection(event.state);
+                NumberBonds.Story.init(event.state);
             }
         });
 
@@ -70,7 +75,7 @@ NumberBonds.App = (function(Story) {
         conf: conf,
         init: init
     };
-})(NumberBonds.Story);
+})();
 
 
 // Call the App.init function once the DOM is ready
