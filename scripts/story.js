@@ -10,6 +10,7 @@ NumberBonds.Story = function(containerEl, storySelection, storyType) {
     this.storySelection = storySelection;
     this.storyType = storyType;
     this.storyTitle = '';
+    this.rows = []; // store the rows in the story in an array
 };
 
 NumberBonds.Story.prototype.setTitle = function() {
@@ -41,27 +42,38 @@ NumberBonds.Story.prototype.clearContent = function() {
     this.containerEl.innerHTML = '';
 };
 
-NumberBonds.Story.prototype.generateRenderFn = function(containerEl, storySelection) {
+// pass in parameters as this is not accessible from nested functions
+NumberBonds.Story.prototype.generateRenderFn = function(storySelection, containerEl, storyType) {
     'use strict';
     if (storySelection === 1) {
         return function() {
-            var row = new NumberBonds.Lines.Row(1, containerEl, storySelection);
+            var row = new NumberBonds.Row(1, containerEl, storySelection, storyType);
             row.createEquation();
         };
     } else {
         return function () {
             for (var rowNumber = 0; rowNumber <= storySelection; rowNumber++) {
-                var row = new NumberBonds.Lines.Row(rowNumber, containerEl, storySelection);
-                row.createEquation();
-                console.log(row);
+                NumberBonds.Story.rows[rowNumber] = new NumberBonds.Row(rowNumber, containerEl, storySelection, storyType);
+                NumberBonds.Story.rows[rowNumber].createEquation();
             }
         };
     }
 };
 
-NumberBonds.Story.prototype.init = function(storySelection) {
+NumberBonds.Story.prototype.renderStoryContent = function() {
     'use strict';
-    console.log(this);
+    for (var rowNumber = 0; rowNumber <= this.storySelection; rowNumber++) {
+        if (this.storySelection === 1) {
+            ++rowNumber;
+        }
+        this.rows[rowNumber] = new NumberBonds.Row(rowNumber, this.containerEl, this.storySelection, this.storyType);
+        this.rows[rowNumber].createEquation();
+    }
+};
+
+NumberBonds.Story.prototype.init = function() {
+    'use strict';
+    console.log('story: ' + this.storySelection);
     // clear the content first
     this.clearContent();
 
@@ -72,8 +84,8 @@ NumberBonds.Story.prototype.init = function(storySelection) {
     this.renderTitle(this.storyTitle);
 
     // render the content of the story
-    var renderStoryContent = this.generateRenderFn(this.containerEl, storySelection);
-    renderStoryContent();
+    //var renderStoryContent = this.generateRenderFn(this.storySelection, this.containerEl, this.storyType);
+    this.renderStoryContent();
 };
 
 
