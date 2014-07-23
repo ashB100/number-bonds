@@ -25,15 +25,16 @@ NumberBonds.Story = function(containerEl, storySelection, storyType) {
  */
 NumberBonds.Story.prototype.setTitle = function() {
     'use strict';
+    var conf = NumberBonds.App.conf;
 
     switch(this.storyType) {
-        case NumberBonds.App.conf.storyOfRandoms.storyType :
+        case conf.storyOfRandoms.storyType :
             this.storyTitle = 'Story of Random Numbers';
             break;
-        case NumberBonds.App.conf.storyOfDoubles.storyType :
+        case conf.storyOfDoubles.storyType :
             this.storyTitle = 'Story of Doubles';
             break;
-        case NumberBonds.App.conf.storyOfNumbers.storyType :
+        case conf.storyOfNumbers.storyType :
             this.storyTitle = 'Story of ' + this.storySelection;
             break;
         default :

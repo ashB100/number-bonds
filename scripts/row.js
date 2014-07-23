@@ -52,6 +52,9 @@ NumberBonds.Row.prototype.renderContainer = function() {
     this.el = NumberBonds.Utilities.renderElement(this.parentEl, 'div', {className: 'row'});
 };
 
+/**
+ * Code to try the appending nodes to document fragment first then to the dom element
+ */
 /*
 NumberBonds.Row.prototype.addDoublesRow = function() {
     'use strict';
