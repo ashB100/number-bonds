@@ -52,45 +52,63 @@ NumberBonds.Row.prototype.renderContainer = function() {
     this.el = NumberBonds.Utilities.renderElement(this.parentEl, 'div', {className: 'row'});
 };
 
-/**
- * The content is rendered differently for "Double" and "Number" selections, eg. Double: 2 + 2 = ---, Number: --- + --- = 2
- */
-NumberBonds.Row.prototype.renderRow = function() {
+/*
+NumberBonds.Row.prototype.addDoublesRow = function() {
+    'use strict';
+    // create a fragment, a staging area for the HTML elements that are created for a row
+    var fragment = document.createDocumentFragment();
+    var Utils = NumberBonds.Utilities;
+
+    // operand1
+    this.operand1 = Utils.renderElement(fragment, 'input', {disabled: 'disabled', value: this.rowNumber});
+    // "+"
+    Utils.renderElement(fragment, 'span', {innerHTML: '+'});
+    // operand2
+    this.operand2 = Utils.renderElement(fragment, 'input', {disabled: 'disabled', value: this.rowNumber});
+    // "="
+    Utils.renderElement(fragment, 'span', {innerHTML: '='});
+    // answer
+    this.answer = Utils.renderElement(fragment, 'input', {autofocus: (this.rowNumber === 0),required: 'required', pattern: '[0-9]'});
+    // feedback
+    Utils.renderElement(fragment, 'span', {className: 'fa'});
+
+    // add the fragment to the parentEl
+    this.el.appendChild(fragment);
+}; */
+
+NumberBonds.Row.prototype.addDoublesRow = function() {
     'use strict';
     var Utils = NumberBonds.Utilities;
-    if (this.storyType === NumberBonds.App.conf.storyOfDoubles.storyType) {
-        // operand1
-        this.operand1 = Utils.renderElement(this.el, 'input', {disabled: 'disabled', value: this.rowNumber});
-        // "+"
-        Utils.renderElement(this.el, 'span', {innerHTML: '+'});
-        // operand2
-        this.operand2 = Utils.renderElement(this.el, 'input', {disabled: 'disabled', value: this.rowNumber});
-        // "="
-        Utils.renderElement(this.el, 'span', {innerHTML: '='});
-        // answer
-        this.answer = Utils.renderElement(this.el, 'input', {autofocus: (this.rowNumber === 0),required: 'required', pattern: '[0-9]'});
-        // feedback
-        Utils.renderElement(this.el, 'span', {className: 'fa'});
-    } else if(this.storyOfNumber === 1) {
-        this.addARandomRow();
+    // operand1
+    this.operand1 = Utils.renderElement(this.el, 'input', {disabled: 'disabled', value: this.rowNumber});
+    // "+"
+    Utils.renderElement(this.el, 'span', {innerHTML: '+'});
+    // operand2
+    this.operand2 = Utils.renderElement(this.el, 'input', {disabled: 'disabled', value: this.rowNumber});
+    // "="
+    Utils.renderElement(this.el, 'span', {innerHTML: '='});
+    // answer
+    this.answer = Utils.renderElement(this.el, 'input', {autofocus: (this.rowNumber === 0),required: 'required', pattern: '[0-9]'});
+    // feedback
+    Utils.renderElement(this.el, 'span', {className: 'fa'});
+};
 
-        // keep count of and display questions attempted
-        // display countdown of time elapsed
+NumberBonds.Row.prototype.addNumbersRow = function() {
+    'use strict';
+    var Utils = NumberBonds.Utilities;
+    // operand1
+    this.operand1 = Utils.renderElement(this.el, 'input', {autofocus: (this.rowNumber === 0), pattern: 'd+'});
+    // "+"
+    Utils.renderElement(this.el, 'span', {innerHTML: '+'});
+    // operand2
+    this.operand2 = Utils.renderElement(this.el, 'input', {pattern: 'd+', required: true});
+    // "="
+    Utils.renderElement(this.el, 'span', {innerHTML: '='});
+    // answer
+    this.answer = Utils.renderElement(this.el, 'input', {disabled: 'disabled', value: this.storyOfNumber});
+    // feedback
+    Utils.renderElement(this.el, 'span', {className: 'fa'});
 
-    } else {
-        // operand1
-        this.operand1 = Utils.renderElement(this.el, 'input', {autofocus: (this.rowNumber === 0), pattern: 'd+'});
-        // "+"
-        Utils.renderElement(this.el, 'span', {innerHTML: '+'});
-        // operand2
-        this.operand2 = Utils.renderElement(this.el, 'input', {pattern: 'd+', required: true});
-        // "="
-        Utils.renderElement(this.el, 'span', {innerHTML: '='});
-        // answer
-        this.answer = Utils.renderElement(this.el, 'input', {disabled: 'disabled', value: this.storyOfNumber});
-        // feedback
-        Utils.renderElement(this.el, 'span', {className: 'fa'});
-    }
 };
 
 NumberBonds.Row.prototype.addARandomRow = function() {
@@ -99,6 +117,8 @@ NumberBonds.Row.prototype.addARandomRow = function() {
     var val1 = Utils.getRandomInt(1,5);
     var val2 = Utils.getRandomInt(1,10);
     this.el.innerHTML = '';
+    this.el.classList.remove('answerCorrect');
+    this.el.classList.remove('answerIncorrect');
     this.randomNumCount += 1;
     // operand1
     this.operand1 = Utils.renderElement(this.el, 'input', {disabled: 'disabled', value: val1});
@@ -109,18 +129,36 @@ NumberBonds.Row.prototype.addARandomRow = function() {
     // "="
     Utils.renderElement(this.el, 'span', {innerHTML: '='});
     // answer
-    this.answer = Utils.renderElement(this.el, 'input', {autofocus: (this.rowNumber === 1)});
+    this.answer = Utils.renderElement(this.el, 'input', {autofocus: true});
     // feedback
     Utils.renderElement(this.el, 'span', {className: 'fa'});
+};
+
+/**
+ * The content is rendered differently for "Double" and "Number" selections, eg. Double: 2 + 2 = ---, Number: --- + --- = 2
+ */
+NumberBonds.Row.prototype.renderRow = function() {
+    'use strict';
+    switch (this.storyType) {
+        case NumberBonds.App.conf.storyOfDoubles.storyType :
+            this.addDoublesRow();
+            break;
+        case NumberBonds.App.conf.storyOfRandoms.storyType:
+            this.addARandomRow();
+            break;
+        case NumberBonds.App.conf.storyOfNumbers.storyType:
+            this.addNumbersRow();
+            break;
+        default:
+            // throw error
+            break;
+    }
 };
 
 NumberBonds.Row.prototype.checkAnswerCorrect = function() {
     'use strict';
     var scoreEl = document.getElementById('score');
 
-    console.log(this);
-    console.log(this.operand1.value);
-    console.log(this.operand2.value);
     // if both operand1 and operand2 are entered
     if (this.operand1.value !== '' && this.operand2.value !== '') {
 
@@ -142,7 +180,6 @@ NumberBonds.Row.prototype.checkAnswerCorrect = function() {
                 // increment score
                 ++NumberBonds.score;
             }
-            console.log('AnswerCorrect: ' + this.rowIsCorrect + ' Score: ' + NumberBonds.score);
 
         // handle incorrect answer
         } else {
@@ -151,13 +188,12 @@ NumberBonds.Row.prototype.checkAnswerCorrect = function() {
             this.el.classList.add('answerIncorrect');
 
             // if the correct answer had been provided before but now an incorrect value is provided then decrement the score
-            if (this.numberOfTimesChanged > 1 && this.rowIsCorrect) {
+            if (this.numberOfTimesChanged >= 1 && this.rowIsCorrect) {
                 // decrement score
                 NumberBonds.score -= 1;
+                this.rowIsCorrect = false;
             }
         }
-
-        // create another event handler for random number answers
 
         // print score
         if (this.storyOfNumber === 1 ) {
@@ -183,11 +219,7 @@ NumberBonds.Row.prototype.addEvents = function() {
         self.checkAnswerCorrect();
     });
 
-    this.el.addEventListener('keyup', function() {
-        self.validateInput();
-    });
-
-    // Add an event for enter key press for 'Story of Random Numbers', if field is empty don't accept enter press
+    // Create another line of 'Story of Random Numbers' when user presses enter
     if(this.storyOfNumber === 1) {
         this.el.addEventListener('keypress', function() {
             if (event.keyCode === 13) {

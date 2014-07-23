@@ -4,6 +4,13 @@
 
 var NumberBonds = NumberBonds || {};
 
+/**
+ * Constructor for a new Story
+ * @param containerEl
+ * @param storySelection
+ * @param storyType
+ * @constructor
+ */
 NumberBonds.Story = function(containerEl, storySelection, storyType) {
     'use strict';
     this.containerEl = containerEl;
@@ -13,6 +20,9 @@ NumberBonds.Story = function(containerEl, storySelection, storyType) {
     this.rows = []; // store the rows in the story in an array
 };
 
+/**
+ * Sets the story title based on the story type, ie Doubles, Random or Numbers
+ */
 NumberBonds.Story.prototype.setTitle = function() {
     'use strict';
 
@@ -32,14 +42,23 @@ NumberBonds.Story.prototype.setTitle = function() {
     }
 };
 
+/**
+ * Prints the title of the story
+ * @param storyTitle{string} The title of the story
+ */
 NumberBonds.Story.prototype.renderTitle = function(storyTitle) {
     'use strict';
-    NumberBonds.Utilities.renderElement(this.containerEl, 'p', {innerHTML: storyTitle});
+    NumberBonds.Utilities.renderElement(document.getElementById('title'), 'h2', {innerHTML: storyTitle});
 };
 
+/**
+ * Clear the HTML title, content and score elements for the new story
+ */
 NumberBonds.Story.prototype.clearContent = function() {
     'use strict';
     this.containerEl.innerHTML = '';
+    document.getElementById('score').innerHTML = '';
+    document.getElementById('title').innerHTML = '';
 };
 
 // pass in parameters as this is not accessible from nested functions
@@ -60,9 +79,14 @@ NumberBonds.Story.prototype.generateRenderFn = function(storySelection, containe
     }
 };
 
+/**
+ * Creates a Row instance for each line of the story, the number of lines depends on the story selection and is 1 plus
+ * the story number, e.g Story of 2 has (1+2) lines. The Story of Randoms has only one line.
+ */
 NumberBonds.Story.prototype.renderStoryContent = function() {
     'use strict';
     for (var rowNumber = 0; rowNumber <= this.storySelection; rowNumber++) {
+        // adjust the row number so only one line is created for the Story of Randoms
         if (this.storySelection === 1) {
             ++rowNumber;
         }
@@ -71,6 +95,9 @@ NumberBonds.Story.prototype.renderStoryContent = function() {
     }
 };
 
+/**
+ * The main init method of Story which clears the HTML div contents, prints the title and the rows/lines of the story.
+ */
 NumberBonds.Story.prototype.init = function() {
     'use strict';
     console.log('story: ' + this.storySelection);
@@ -87,52 +114,3 @@ NumberBonds.Story.prototype.init = function() {
     //var renderStoryContent = this.generateRenderFn(this.storySelection, this.containerEl, this.storyType);
     this.renderStoryContent();
 };
-
-
-/*
-NumberBonds.Story = (function(Lines, Utils) {
-    'use strict';
-
-    var containerEl;
-
-    var setContainer = function(el) {
-        containerEl = el;
-    };
-
-    var renderStorySelection = function(storySelection) {
-        var row;
-
-        // clear the content first
-        console.dir(containerEl);
-        containerEl.innerHTML = '';
-
-        // print the title of story
-        printTitle(storySelection);
-
-        // print the lines of the story (0-rowNumber, except for Random Numbers which only has one row)
-        for (var rowNumber = 0; rowNumber <= storySelection; rowNumber++) {
-            // storySelection 1 is for Story of Random Numbers. Adjust rowNumber so only one row gets created
-            if (storySelection === 1) {
-                ++rowNumber;
-            }
-            row = new Lines.Row(rowNumber, containerEl, storySelection);
-            row.createEquation();
-        }
-    };
-
-    var printTitle = function(storySelection) {
-        var title = 'Story Of ' + storySelection;
-        if (storySelection === 1) {
-            title = 'Story Of Randomly Generated Numbers';
-        } else if(storySelection === 20) {
-            title = 'Story of Doubles';
-        }
-        Utils.renderElement(containerEl, 'p', {innerHTML: title});
-    };
-
-    return {
-        setContainer: setContainer,
-        renderStorySelection: renderStorySelection
-    };
-})(NumberBonds.Lines, NumberBonds.Utilities);
-*/

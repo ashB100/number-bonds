@@ -28,14 +28,28 @@ NumberBonds.Utilities = (function() {
     var renderElement = function(parentEl, elementType, attributeList) {
         var el = document.createElement(elementType);
         if ( attributeList !== undefined) {
-            typeof attributeList ? 'object' : {};
-            foreach(attributeList, function(property, value){
+            attributeList = attributeList || {};
+
+            // doesn't work for attributes which don't need a value, eg. autofocus
+            foreach(attributeList, function(property){
                 el[property] = attributeList[property];
             });
         }
         parentEl.appendChild(el);
         return el;
     };
+
+    /*
+    var renderElement = function(fragment, elementType, attributeList ) {
+        var el = document.createElement(elementType);
+        if ( attributeList !== undefined) {
+            attributeList = attributeList || {};
+            foreach(attributeList, function(property){
+                el[property] = attributeList[property];
+            });
+        }
+        fragment.appendChild(el);
+    }; */
 
     // Returns a random integer between min and max
     var getRandomInt = function(min, max) {
