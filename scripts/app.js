@@ -21,7 +21,7 @@
 
 var NumberBonds = NumberBonds || {};
 
-NumberBonds.App = (function() {
+NumberBonds.App = (function(Story) {
     'use strict';
 
     var conf = {
@@ -52,14 +52,21 @@ NumberBonds.App = (function() {
     var init = function(containerEl) {
 
         // Update the page content when the click event is called. Use event bubbling so listener can be on document itself
+        // Even propagation is the process by which the browser decides which objects to trigger event handlers on. For
+        // events that are specific to a single object, no propagation is required. Other kinds of events, however
+        // propagate or "bubble" up the document tree. It is first fired on the target element, then the containing
+        // elements and the Document object itself. It is sometimes more convenient to register a single event handler
+        // on a Document or other container element than to register handlers on individual elements. In another form
+        // of event propagation called event capturing, handlers have the chance to intercept/capture events before
+        // they are delivered to their actual target.
         document.addEventListener('click', function() {
             if (event.target.className === 'storyLink') {
-                event.preventDefault();
+                event.preventDefault(); // the default action is to follow the link and load a new page.
                 var pageURL = event.target.getAttribute('href'), // Fetch the page data using the URL in the link
                     storySelection = parseInt(event.target.getAttribute('data-num'), 10),
                     title = 'Story of ' + storySelection,
                     storyType = getStoryType(storySelection),
-                    story = new NumberBonds.Story(containerEl, storySelection, storyType);
+                    story = new Story(containerEl, storySelection, storyType);
 
                 // Update the storyContent
                 story.init();
@@ -77,7 +84,7 @@ NumberBonds.App = (function() {
             // event.state will be undefined until user has clicked on a navigation option.
             if (event.state) {
                 // I simply recreate the rows for the story at the moment
-                var story = new NumberBonds.Story(containerEl, event.state, getStoryType(event.state));
+                var story = new Story(containerEl, event.state, getStoryType(event.state));
                 story.init();
             }
         });
@@ -88,12 +95,11 @@ NumberBonds.App = (function() {
         conf: conf,
         init: init
     };
-})();
+})(NumberBonds.Story); // pass in the dependency
 
 
 // Call the App.init function once the DOM is ready
 window.onload = function() {
     'use strict';
-
     NumberBonds.App.init(document.getElementById('content'));
 };
