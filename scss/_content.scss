@@ -1,14 +1,17 @@
+body {
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-size: 14px;
+	line-height: 1.5;
+	color: #333;
+}
+
 /* Holding outermost DIV */
 #wrapper {
     margin-right: auto;
     margin-left: auto;
     width: 96%;
-}
-body {
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-size: 14px;
-    line-height: 1.5;
-    color: #333333;
+	background: skyblue;
+	//background: #7ee5ed;
 }
 
 #logo {
@@ -18,50 +21,74 @@ body {
     background-position: left top;
     display: block;
     padding: 100px 0;
-    /*color: #0d0c0c;
-    text-transform: uppercase;
-    font-family: 'BebasNeueRegular';
-    font-size: 3em; */
 }
 
+/* Navigation Styles */
 nav {
     padding: 10px 0;
     border-bottom-color: #bfbfbf;
     border-bottom-style: double;
     border-bottom-width: 2px;
 
+	ul {
+		margin: 0;
 
-}
-nav ul li {
-    display: inline-block;
-    margin-right: 2.6595745%; /* 25 ÷ 940 */
-}
+		li {
+			display: inline-block;
+			margin-right: 2.6595745%; /* 25 ÷ 940 */
 
-nav ul li a {
-    height: 42px;
-    text-decoration: none;
-    text-transform: uppercase;
-    font: 1.875em/42px 'BebasNeueRegular';
-    color: hsl(240, 50%, 50%);
-    text-shadow: 0 1px 10px hsla(0, 0%, 100%, 1.0);
-}
+			a {
+					height: 42px;
+					text-decoration: none;
+					text-transform: uppercase;
+					font: 1.875em/42px 'BebasNeueRegular';
+					//color: hsl(240, 50%, 50%);
+					color: #fff;
+					text-shadow: 0 1px 10px hsla(0, 0%, 50%, 1.0);
+			}
 
-nav ul li a:hover {
-    animation: warning 1.5s infinite ease-in;
+		}
+	}
+
 }
 
 nav li:nth-child(odd) a {
     color: hsl(359, 99%, 50%);
+	text-shadow: 0 1px 5px hsla(0, 0%, 100%, 1.0);
 }
 
 nav li:nth-child(odd) a:hover {
-    color: hsl(359, 99%, 40%);
+    color: hsl(120, 99%, 30%);
+}
+
+nav li:nth-child(even) a:hover {
+	color: hsl(60, 99%, 50%);
+}
+
+/* Title */
+#title {
+	width: 100%;
+	height: 30px;
+	padding-bottom: 15px;
+	text-align: center;
+	text-transform: uppercase;
+	text-shadow: 0 1px 10px hsla(0, 0%, 50%, 1.0);
+	font-size: 14px;
+	color: #fff;
+}
+
+/* Content Styles */
+#content {
+	width: 100%;
+	height: 650px;
+	text-align: center;
 }
 
 .row{
     margin: 0 10px;
     padding-bottom: 1px;
 }
+
 .row.answerCorrect span.fa:after {
     content: "\f00c";
 }
@@ -69,52 +96,30 @@ nav li:nth-child(odd) a:hover {
 .row.answerIncorrect span.fa:after {
     content: "\f088";
 }
+
 .answerCorrect span.fa::after{
     content: "\f00c";
 }
+
 .answerIncorrect span.fa::after{
     content: "\f088";
 }
-#content {
-    text-align: center;
-    width: 100%;
-    height: 100%;
-    background: skyblue;
+
+span {
+	width: 15px;
+    padding-left: 10px;
+    padding-right: 10px;
 }
-
-#sidebar {
-    border-right-color: #e8e8e8;
-    border-right-style: solid;
-    border-right-width: 2px;
-    margin-top: 58px;
-    margin-right: 10px;
-    margin-left: 10px;
-    float: left;
-    width: 22.7083333%; /* 218/960 */
-} #footer {
-      float: left;
-      margin-top: 20px;
-      margin-right: 10px;
-      margin-left: 10px;
-      clear: both;
-      width: 97.9166667%; /* 940/960 */
-
-  }
-
-  span {
-      padding-left: 10px;
-      padding-right: 10px;
-
-  }
 
 input {
-
+	padding: 5px;
 }
 
-.inputEditable {
-
-}
-
-.inputNotEditable{
-
+/* Score */
+#score {
+	width: 100%;
+	height: 30px;
+	text-align: center;
+	color: #fff;
+	text-transform: uppercase;
 }
